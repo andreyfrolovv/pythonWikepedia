@@ -13,7 +13,7 @@ def collect_sections_data(sections, result_list=[]):
 
     return result_list
 
-app = FastAPI()
+app = FastAPI(version="0.2.0")
 
 @app.get("/search-wikepedia")
 async def searchWikepedia(topic, language="en"):
