@@ -25,6 +25,22 @@ async def searchWikepedia(topic, language="en"):
 
         page = wiki.page(topic)
 
+        if not page.exists():
+            results = wiki.search(topic)
+
+            for title, page in results.pages.items():
+                all_sections = collect_sections_data(page.sections, [])
+                return {
+                    "result": True,
+                    "content": {
+                        "title": page.title,
+                        "preamble": page.summary,
+                        "text": page.text,
+                        "sections": all_sections,
+                        "fullUrl": page.fullurl
+                    }
+                }
+
         all_sections = collect_sections_data(page.sections, [])
 
         if page.exists():
@@ -39,7 +55,6 @@ async def searchWikepedia(topic, language="en"):
                 }
             }
         else:
-            print("Страница не найдена.")
             return {
                 "result": True,
                 "content": "Page Not Found",
